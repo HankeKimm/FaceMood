@@ -1,5 +1,6 @@
 package com.socialtracking.ubiss;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +14,8 @@ import android.view.MenuItem;
 import com.aware.Applications;
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
+import com.aware.Screen;
 import com.aware.ui.PermissionsHandler;
-
-import android.Manifest;
 
 import java.util.ArrayList;
 
@@ -32,9 +32,52 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!Aware.IS_CORE_RUNNING) {
-            Intent aware = new Intent(getApplicationContext(), Aware.class);
-            startService(aware);
+
+
+        ArrayList<String> REQUIRED_PERMISSIONS = new ArrayList<>();
+        REQUIRED_PERMISSIONS.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        boolean permissions_ok = true;
+        for (String p : REQUIRED_PERMISSIONS) { //loop to check all the required permissions.
+            if (PermissionChecker.checkSelfPermission(this, p) != PermissionChecker.PERMISSION_GRANTED) {
+                permissions_ok = false;
+                break;
+            }
+        }
+
+        if (permissions_ok) {
+
+            //Intent aware = new Intent(getApplicationContext(), Aware.class);
+            //startService(aware);
+
+            Aware.setSetting(this, Aware_Preferences.DEBUG_FLAG, true);
+            Aware.setSetting(this, Aware_Preferences.STATUS_APPLICATIONS, true);
+
+            /*Aware.startScreen(this);
+            Screen.setSensorObserver(new Screen.AWARESensorObserver() {
+                @Override
+                public void onScreenOn() {
+                    Log.d("mood", "ON");
+                }
+
+                @Override
+                public void onScreenOff() {
+
+                }
+
+                @Override
+                public void onScreenLocked() {
+
+                }
+
+                @Override
+                public void onScreenUnlocked() {
+
+                }
+            });*/
+
+            /*Intent applications = new Intent(this, Applications.class);
+            startService(applications);*/
 
             Applications.isAccessibilityServiceActive(getApplicationContext());
 
@@ -69,29 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-        }
-        /*Intent aware = new Intent(this, Aware.class);
-        startService(aware);
 
-        Aware.setSetting(this, Aware_Preferences.DEBUG_FLAG, true);
-        Aware.setSetting(this, Aware_Preferences.STATUS_APPLICATIONS, true);
-
-        Applications.isAccessibilityServiceActive(this);*/
-
-        ArrayList<String> REQUIRED_PERMISSIONS = new ArrayList<>();
-        REQUIRED_PERMISSIONS.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        boolean permissions_ok = true;
-        for (String p : REQUIRED_PERMISSIONS) { //loop to check all the required permissions.
-            if (PermissionChecker.checkSelfPermission(this, p) != PermissionChecker.PERMISSION_GRANTED) {
-                permissions_ok = false;
-                break;
-            }
-        }
-
-        if (permissions_ok) {
-            Aware.setSetting(this, Aware_Preferences.DEBUG_FLAG, true);
-            Aware.setSetting(this, Aware_Preferences.STATUS_APPLICATIONS, true);
         }
         else {
             Intent permissions = new Intent(this, PermissionsHandler.class);
