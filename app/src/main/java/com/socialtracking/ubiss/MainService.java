@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.aware.Applications;
 import com.aware.Aware;
+import com.aware.Aware_Preferences;
 
 public class MainService extends Service {
 
@@ -22,15 +24,12 @@ public class MainService extends Service {
 
     @Override
     public void onCreate() {
-        Intent aware = new Intent(this, Aware.class);
-        startService(aware);
 
-        Applications.isAccessibilityServiceActive(this);
 
         Applications.setSensorObserver(new Applications.AWARESensorObserver() {
             @Override
             public void onForeground(ContentValues contentValues) {
-                System.out.println(contentValues.describeContents());
+                Log.d("mood", contentValues.toString());
             }
 
             @Override
