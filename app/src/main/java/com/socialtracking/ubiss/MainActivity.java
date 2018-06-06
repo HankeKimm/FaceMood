@@ -1,19 +1,21 @@
 package com.socialtracking.ubiss;
 
+import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.aware.Applications;
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
+import com.aware.Screen;
 import com.aware.ui.PermissionsHandler;
-
-import android.Manifest;
 
 import java.util.ArrayList;
 
@@ -30,19 +32,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!Aware.IS_CORE_RUNNING) {
-            Intent aware = new Intent(getApplicationContext(), Aware.class);
-            startService(aware);
 
-            Applications.isAccessibilityServiceActive(getApplicationContext());
-        }
-        /*Intent aware = new Intent(this, Aware.class);
-        startService(aware);
-
-        Aware.setSetting(this, Aware_Preferences.DEBUG_FLAG, true);
-        Aware.setSetting(this, Aware_Preferences.STATUS_APPLICATIONS, true);
-
-        Applications.isAccessibilityServiceActive(this);*/
 
         ArrayList<String> REQUIRED_PERMISSIONS = new ArrayList<>();
         REQUIRED_PERMISSIONS.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -54,9 +44,75 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
+
         if (permissions_ok) {
+
+            //Intent aware = new Intent(getApplicationContext(), Aware.class);
+            //startService(aware);
+
             Aware.setSetting(this, Aware_Preferences.DEBUG_FLAG, true);
             Aware.setSetting(this, Aware_Preferences.STATUS_APPLICATIONS, true);
+
+            /*Aware.startScreen(this);
+            Screen.setSensorObserver(new Screen.AWARESensorObserver() {
+                @Override
+                public void onScreenOn() {
+                    Log.d("mood", "ON");
+                }
+
+                @Override
+                public void onScreenOff() {
+
+                }
+
+                @Override
+                public void onScreenLocked() {
+
+                }
+
+                @Override
+                public void onScreenUnlocked() {
+
+                }
+            });*/
+
+            /*Intent applications = new Intent(this, Applications.class);
+            startService(applications);*/
+
+            Applications.isAccessibilityServiceActive(getApplicationContext());
+
+            Applications.setSensorObserver(new Applications.AWARESensorObserver() {
+                @Override
+                public void onForeground(ContentValues contentValues) {
+                    Log.d("mood", contentValues.toString());
+                }
+
+                @Override
+                public void onNotification(ContentValues contentValues) {
+
+                }
+
+                @Override
+                public void onCrash(ContentValues contentValues) {
+
+                }
+
+                @Override
+                public void onKeyboard(ContentValues contentValues) {
+
+                }
+
+                @Override
+                public void onBackground(ContentValues contentValues) {
+
+                }
+
+                @Override
+                public void onTouch(ContentValues contentValues) {
+
+                }
+            });
+
         }
         else {
             Intent permissions = new Intent(this, PermissionsHandler.class);
