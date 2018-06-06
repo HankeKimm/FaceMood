@@ -37,13 +37,16 @@ public class HomeActivityFragment extends Fragment {
         facebookEntries.add(new Entry(2f, 10));
         facebookEntries.add(new Entry(3f, 5));
 
-//        ArrayList<String> time = new ArrayList<>();
-//        time.add("1");
-//        time.add("2");
-//        time.add("3");
-//        time.add("4");
+//        ArrayList<String> labels = new ArrayList<>();
+//        labels.add("Positive");
+//        labels.add("Negative");
+//        labels.add("Negative");
+//        labels.add("Positive");
 
         LineDataSet dataset = new LineDataSet(facebookEntries, "Facebook usage (mins)");
+        dataset.setDrawCircles(true);
+        dataset.setDrawFilled(true);
+        dataset.setCubicIntensity(5);
 
         ArrayList<Entry> moodEntries = new ArrayList<>();
         moodEntries.add(new Entry(0f, 0));
@@ -52,6 +55,7 @@ public class HomeActivityFragment extends Fragment {
         moodEntries.add(new Entry(3f, 0));
 
         LineDataSet dataset2 = new LineDataSet(moodEntries, "Mood");
+        dataset2.setDrawCircles(true);
 
         LineData theDataset = new LineData(dataset, dataset2);
         chart.setData(theDataset);
