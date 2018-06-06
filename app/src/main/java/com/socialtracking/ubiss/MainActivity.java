@@ -2,19 +2,20 @@ package com.socialtracking.ubiss;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 
 import com.aware.Applications;
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
-import com.socialtracking.ubiss.R;
+import com.aware.ui.PermissionsHandler;
+
+import android.Manifest;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,15 +25,50 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+    }
 
-        Intent aware = new Intent(this, Aware.class);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!Aware.IS_CORE_RUNNING) {
+            Intent aware = new Intent(getApplicationContext(), Aware.class);
+            startService(aware);
+
+            Applications.isAccessibilityServiceActive(getApplicationContext());
+        }
+        /*Intent aware = new Intent(this, Aware.class);
         startService(aware);
 
         Aware.setSetting(this, Aware_Preferences.DEBUG_FLAG, true);
         Aware.setSetting(this, Aware_Preferences.STATUS_APPLICATIONS, true);
 
-        Applications.isAccessibilityServiceActive(this);
+        Applications.isAccessibilityServiceActive(this);*/
+
+        ArrayList<String> REQUIRED_PERMISSIONS = new ArrayList<>();
+        REQUIRED_PERMISSIONS.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        boolean permissions_ok = true;
+        for (String p : REQUIRED_PERMISSIONS) { //loop to check all the required permissions.
+            if (PermissionChecker.checkSelfPermission(this, p) != PermissionChecker.PERMISSION_GRANTED) {
+                permissions_ok = false;
+                break;
+            }
+        }
+        if (permissions_ok) {
+            Aware.setSetting(this, Aware_Preferences.DEBUG_FLAG, true);
+            Aware.setSetting(this, Aware_Preferences.STATUS_APPLICATIONS, true);
+        }
+        else {
+            Intent permissions = new Intent(this, PermissionsHandler.class);
+            permissions.putExtra(PermissionsHandler.EXTRA_REQUIRED_PERMISSIONS, REQUIRED_PERMISSIONS);
+            permissions.putExtra(PermissionsHandler.EXTRA_REDIRECT_ACTIVITY, getPackageName() + "/" + getClass().getName());
+            permissions.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(permissions);
+
+            finish();
+        }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
