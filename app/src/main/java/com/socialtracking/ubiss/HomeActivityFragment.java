@@ -19,8 +19,11 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.socialtracking.ubiss.models.FacebookDataItem;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -111,16 +114,16 @@ public class HomeActivityFragment extends Fragment {
         List<FacebookDataItem> facebookUsageData = dataManager.retrieveFacebookData();
 
 
-//        float counter2 = 0;
-//        for(HashMap.Entry<Double, Double> entry: facebookUsageData.entrySet()) {
-//            Log.d("HomeActivity", "" + entry.getKey());
-//
-//            double timestamp = entry.getKey();
-//            double value = entry.getValue();
-//
-//            facebookData.add(new Entry(counter2,  (float) value, R.drawable.happy));
-//            counter2 += 1;
-//        }
+        float counter2 = 0;
+        for(FacebookDataItem dataItem : facebookUsageData) {
+            //Log.d("HomeActivity", "" + entry.getKey());
+
+            double timestamp = dataItem.getSessionStart();
+            double value = dataItem.getSessionLength();
+
+            facebookData.add(new Entry(counter2,  (float) value, R.drawable.happy));
+            counter2 += 1;
+        }
 
 
         LineDataSet dataset2 = new LineDataSet(facebookData, "Facebook usage (mins)");
@@ -138,5 +141,11 @@ public class HomeActivityFragment extends Fragment {
 
         return rootview;
 
+    }
+
+    private String convertUnixTimestampToDateString(long timestamp) {
+        Date currentDate = new Date(timestamp);
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        return df.format(currentDate);
     }
 }
