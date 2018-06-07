@@ -9,7 +9,7 @@ public class FacebookDataItem {
     public FacebookDataItem(String sessionId, long sessionStart, double sessionLength) {
         this.sessionId = sessionId;
         this.sessionStart = sessionStart;
-        this.sessionLength = sessionLength;
+        this.sessionLength = sessionLength/1000/60%60;
     }
 
     public String getSessionId() {
@@ -33,6 +33,6 @@ public class FacebookDataItem {
     }
 
     public void setSessionLength(double sessionLength) {
-        this.sessionLength = sessionLength;
+        this.sessionLength = sessionLength/1000/60%60;
     }
 }

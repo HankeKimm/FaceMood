@@ -51,7 +51,12 @@ public class HomeActivityFragment3 extends Fragment {
         super.onResume();
         DataManager dataManager = new DataManager(getActivity());
         List<FacebookDataItem> facebookLogList = dataManager.retrieveFacebookData();
-        ArrayAdapter adapter = new FacebookArrayAdapter(getActivity(), facebookLogList);
+
+        DataManager dataManager2 = new DataManager(getContext());
+        ArrayList<String> esmAnswers = dataManager.retrieveESMSData();
+
+        ArrayAdapter adapter = new FacebookArrayAdapter(getActivity(), facebookLogList, esmAnswers);
+
         mListView.setAdapter(adapter);
     }
 }
