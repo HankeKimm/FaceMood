@@ -18,9 +18,11 @@ import java.util.ArrayList;
 public class HomeActivityFragment3 extends Fragment {
 
     private ListView mListView;
+    private DataManager dataManager;
 
     public HomeActivityFragment3() {
         // Required empty public constructor
+        dataManager = new DataManager(getActivity());
     }
 
 
@@ -42,6 +44,7 @@ public class HomeActivityFragment3 extends Fragment {
             listItems[i] = recipe.title;
         }*/
 // 4
+        dataManager.retrieveFacebookData();
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, testList);
 
         mListView.setAdapter(adapter);
