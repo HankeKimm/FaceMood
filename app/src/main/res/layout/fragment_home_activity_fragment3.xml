@@ -6,12 +6,10 @@
     tools:context=".HomeActivityFragment3">
 
     <ListView
-        android:id="@+id/recipe_list_view"
+        android:id="@+id/facebook_log_list_view"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
     </ListView>
-
-
 
 
 </RelativeLayout>

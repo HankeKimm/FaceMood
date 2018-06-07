@@ -21,14 +21,12 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeActivityFragment3 extends Fragment {
 
     private ListView mListView;
-
 
 
     public HomeActivityFragment3() {
@@ -40,20 +38,27 @@ public class HomeActivityFragment3 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootview = inflater.inflate(R.layout.fragment_home_activity_fragment3, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_activity_fragment3, container, false);
 
+        mListView = (ListView) view.findViewById(R.id.facebook_log_list_view);
+// 1
+        ArrayList<String> testList = new ArrayList<>();
+        testList.add("Hanke");
+// 2
+        /*String[] listItems = new String[recipeList.size()];
+// 3
+        for(int i = 0; i < recipeList.size(); i++){
+            Recipe recipe = recipeList.get(i);
+            listItems[i] = recipe.title;
+        }*/
+// 4
+        DataManager dataManager = new DataManager(getActivity());
+        dataManager.retrieveFacebookData();
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, testList);
 
-//        mListView = (ListView) rootview.findViewById(R.id.recipe_list_view);
-//
-//        final String[] logsList = new String[]{"shkurta", "elcin", "hanke", "heng", "shkurta", "elcin", "hanke", "heng", "shkurta", "elcin", "hanke", "heng"};
-//
-//
-//        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.list_item_view, logsList);
-//        mListView.setAdapter(adapter);
+        mListView.setAdapter(adapter);
 
-
-
-        return rootview;
+        return view;
     }
 
 }
