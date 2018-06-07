@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.socialtracking.ubiss.models.FacebookDataItem;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,40 +38,103 @@ public class HomeActivityFragment extends Fragment {
         View rootview =  inflater.inflate(R.layout.fragment_home, container, false);
 
         LineChart chart = (LineChart) rootview.findViewById(R.id.moodChart);
+        LineChart facebookUsagechart = (LineChart) rootview.findViewById(R.id.facebookUsageChart);
 
-        List<Entry> facebookEntries = new ArrayList<>();
-        facebookEntries.add(new Entry(0f, 1));
-        facebookEntries.add(new Entry(1f, 2));
-        facebookEntries.add(new Entry(2f, 10));
-        facebookEntries.add(new Entry(3f, 5));
 
-        int[] labels = new int[]{1, 0, 0, 1};
+        DataManager dataManager = new DataManager(getContext());
+        ArrayList<String> esmAnswers = dataManager.retrieveESMSData();
 
-        LineDataSet dataset = new LineDataSet(facebookEntries, "Facebook usage (mins)");
+
+        /*
+        Negative and Positive emotions
+         */
+        ArrayList<String> positiveEmotions = new ArrayList<String>();
+        positiveEmotions.add("excited");
+        positiveEmotions.add("delighted");
+        positiveEmotions.add("happy");
+        positiveEmotions.add("glad");
+        positiveEmotions.add("calm");
+        positiveEmotions.add("satisfied");
+        positiveEmotions.add("serene");
+        positiveEmotions.add("sleepy");
+
+
+//        ArrayList<String> negativeEmotions = new ArrayList<String>();
+//        negativeEmotions.add("afraid");
+//        negativeEmotions.add("tense");
+//        negativeEmotions.add("angry");
+//        negativeEmotions.add("frustrated");
+//        negativeEmotions.add("miserable");
+//        negativeEmotions.add("sad");
+//        negativeEmotions.add("tired");
+//        negativeEmotions.add("gloomy")
+
+
+        /*
+        Create and design the mood entries dataset
+         */
+
+        List<Entry> moodEntries = new ArrayList<>();
+
+        int counter = 0;
+        for (String s: esmAnswers){
+            //If emotion in positive emotions set 0
+            if(positiveEmotions.contains(s))
+                moodEntries.add(new Entry(counter, 0));
+            else
+                moodEntries.add(new Entry(counter, 1));
+
+            counter += 1;
+
+        }
+
+        LineDataSet dataset = new LineDataSet(moodEntries, "Mood (positive, negative)");
         dataset.setDrawCircles(true);
         dataset.setDrawFilled(true);
         dataset.disableDashedLine();
         dataset.setCircleRadius(5);
 //        dataset.setCircleColor(R.drawable.happy);
         dataset.setCircleHoleRadius(5);
-        dataset.setCircleColorHole(R.color.colorPrimaryDark);
-
-
-
-//        for (int mood: labels) {
-//            if (mood == 1) {
-//                dataset.setCircleColorHole(R.color.primary);
-//                Log.d("HomeActivitye", "" + mood);
-//            } else {
-//                dataset.setCircleColorHole(R.color.accent);
-//
-//            }
-//        }
-
+//        dataset.setCircleColorHole(R.color.colorPrimaryDark);
 
 
         LineData theDataset = new LineData(dataset);
         chart.setData(theDataset);
+
+
+        /*
+        Create and design the facebook usage entries dataset
+         */
+
+        List<Entry> facebookData = new ArrayList<>();
+
+        List<FacebookDataItem> facebookUsageData = dataManager.retrieveFacebookData();
+
+
+//        float counter2 = 0;
+//        for(HashMap.Entry<Double, Double> entry: facebookUsageData.entrySet()) {
+//            Log.d("HomeActivity", "" + entry.getKey());
+//
+//            double timestamp = entry.getKey();
+//            double value = entry.getValue();
+//
+//            facebookData.add(new Entry(counter2,  (float) value, R.drawable.happy));
+//            counter2 += 1;
+//        }
+
+
+        LineDataSet dataset2 = new LineDataSet(facebookData, "Facebook usage (mins)");
+        dataset.setDrawCircles(true);
+        dataset.setDrawFilled(true);
+        dataset.disableDashedLine();
+        dataset.setCircleRadius(5);
+//        dataset.setCircleColor(R.drawable.happy);
+        dataset.setCircleHoleRadius(5);
+//        dataset.setCircleColorHole(R.color.colorPrimaryDark);
+
+
+        LineData theDataset2 = new LineData(dataset2);
+        facebookUsagechart.setData(theDataset2);
 
         return rootview;
 
