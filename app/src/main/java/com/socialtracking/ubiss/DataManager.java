@@ -5,9 +5,13 @@ import android.database.Cursor;
 
 import com.aware.providers.Applications_Provider;
 import com.aware.providers.ESM_Provider;
+import com.socialtracking.ubiss.models.FacebookDataItem;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DataManager {
 
@@ -37,7 +41,7 @@ public class DataManager {
         }
     }
 
-    public void retrieveFacebookData() {
+    public List<FacebookDataItem> retrieveFacebookData() {
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY,0);
         today.set(Calendar.MINUTE, 0);
@@ -48,24 +52,27 @@ public class DataManager {
                 Applications_Provider.Applications_Foreground.TIMESTAMP + ">=" +today.getTimeInMillis(), null,
                 Applications_Provider.Applications_Foreground.TIMESTAMP + " ASC");
 
-        HashMap<Double, Double> facebook_usage = new HashMap<>();
+        List<FacebookDataItem> facebookUsageList = new ArrayList<>();
 
         if (cursor != null && cursor.moveToFirst()) {
 
-            double elapsed = 0;
-            double timestamp_start = 0;
+            double elapsed;
+            long timestamp_start = 0;
+            String sessionId = null;
 
             do {
                 if(cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals("com.facebook.katana")) {
                     elapsed = 0;
-                    timestamp_start = cursor.getDouble(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.TIMESTAMP));
-                } else if (timestamp_start > 0 &&
-                        !cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals("com.facebook.katana")) {
-                    elapsed = cursor.getDouble(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.TIMESTAMP))-timestamp_start;
-                    facebook_usage.put(timestamp_start, elapsed);
+                    timestamp_start = cursor.getLong(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.TIMESTAMP));
+                    sessionId = cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground._ID));
+                } else if (timestamp_start > 0
+                        && !cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals("com.facebook.katana")) {
+                    elapsed = cursor.getDouble(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.TIMESTAMP)) - timestamp_start;
+                    facebookUsageList.add(new FacebookDataItem(sessionId, timestamp_start, elapsed));
                     timestamp_start = 0;
                 }
             } while (cursor.moveToNext());
         }
+        return facebookUsageList;
     }
 }

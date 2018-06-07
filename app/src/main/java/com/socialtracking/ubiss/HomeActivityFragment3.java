@@ -17,9 +17,12 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.socialtracking.ubiss.adapters.FacebookArrayAdapter;
+import com.socialtracking.ubiss.models.FacebookDataItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,8 +45,10 @@ public class HomeActivityFragment3 extends Fragment {
 
         mListView = (ListView) view.findViewById(R.id.facebook_log_list_view);
 // 1
-        ArrayList<String> testList = new ArrayList<>();
-        testList.add("Hanke");
+        DataManager dataManager = new DataManager(getActivity());
+        List<FacebookDataItem> facebookLogList = dataManager.retrieveFacebookData();
+
+        //testList.add("Hanke");
 // 2
         /*String[] listItems = new String[recipeList.size()];
 // 3
@@ -52,13 +57,15 @@ public class HomeActivityFragment3 extends Fragment {
             listItems[i] = recipe.title;
         }*/
 // 4
-        DataManager dataManager = new DataManager(getActivity());
-        dataManager.retrieveFacebookData();
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, testList);
+        ArrayAdapter adapter = new FacebookArrayAdapter(getActivity(), facebookLogList);
 
         mListView.setAdapter(adapter);
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }
