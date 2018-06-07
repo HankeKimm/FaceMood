@@ -40,6 +40,8 @@ public class HomeActivity extends AppCompatActivity {
     private static String lastUsed = null;
     private BroadcastReceiver receiver;
 
+    private final String FACEBOOK_PACKAGE = "com.facebook.katana";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,19 +107,8 @@ public class HomeActivity extends AppCompatActivity {
                 public void onForeground(ContentValues contentValues) {
                     Log.d("mood", contentValues.toString());
                     if((lastUsed != null)) {
-                        if (lastUsed.equals("com.facebook.katana") && !contentValues.get("package_name").toString().equals("com.facebook.katana")) {
-                            try {
-                                ESMFactory factory = new ESMFactory();
-                                ESM_PAM pam = new ESM_PAM();
-                                pam.setTitle("Mood Assessment");
-                                pam.setInstructions("Pick the closest to how you feel right now.");
-                                factory.addESM(pam);
-                                ESM.queueESM(getApplicationContext(), factory.build());
-                                JSONArray array = factory.getQueue();
-                                Log.d("esm_data", array.join("+"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                        if (lastUsed.equals(FACEBOOK_PACKAGE) && !contentValues.get(FACEBOOK_PACKAGE).toString().equals(FACEBOOK_PACKAGE)) {
+                            createESM();
                         }
                     }
                     lastUsed = contentValues.get("package_name").toString();
@@ -195,6 +186,21 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
+        }
+    }
+
+    private void createESM() {
+        try {
+            ESMFactory factory = new ESMFactory();
+            ESM_PAM pam = new ESM_PAM();
+            pam.setTitle("Mood Assessment");
+            pam.setInstructions("Pick the closest to how you feel right now.");
+            factory.addESM(pam);
+            ESM.queueESM(getApplicationContext(), factory.build());
+            JSONArray array = factory.getQueue();
+            Log.d("esm_data", array.join("+"));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
