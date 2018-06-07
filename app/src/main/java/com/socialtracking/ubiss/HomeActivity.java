@@ -197,8 +197,6 @@ public class HomeActivity extends AppCompatActivity {
             pam.setInstructions("Pick the closest to how you feel right now.");
             factory.addESM(pam);
             ESM.queueESM(getApplicationContext(), factory.build());
-            JSONArray array = factory.getQueue();
-            Log.d("esm_data", array.join("+"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
