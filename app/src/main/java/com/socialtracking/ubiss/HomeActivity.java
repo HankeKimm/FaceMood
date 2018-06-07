@@ -1,8 +1,11 @@
 package com.socialtracking.ubiss;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,7 +27,9 @@ import com.aware.ESM;
 import com.aware.ui.PermissionsHandler;
 import com.aware.ui.esms.ESMFactory;
 import com.aware.ui.esms.ESM_PAM;
+import com.google.gson.JsonArray;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
@@ -32,8 +37,8 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    static String lastUsed = null;
-
+    private static String lastUsed = null;
+    private BroadcastReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,22 @@ public class HomeActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //Intent homeIntent = new Intent(HomeActivity.this, HomeActivity.class);
+                //finish();
+                //Return to home screen for now. We may change this later.
+                moveTaskToBack(true);
+                //tartActivity(homeIntent);
+            }
+        };
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ESM.ACTION_AWARE_ESM_QUEUE_COMPLETE);
+        filter.addAction(ESM.ACTION_AWARE_ESM_ANSWERED);
+        filter.addAction(ESM.ACTION_AWARE_ESM_DISMISSED);
+        this.registerReceiver(receiver, filter);
+
     }
 
     @Override
@@ -73,38 +94,8 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         if (permissions_ok) {
-
-            //Intent aware = new Intent(getApplicationContext(), Aware.class);
-            //startService(aware);
-
             Aware.setSetting(this, Aware_Preferences.DEBUG_FLAG, true);
             Aware.setSetting(this, Aware_Preferences.STATUS_APPLICATIONS, true);
-
-            /*Aware.startScreen(this);
-            Screen.setSensorObserver(new Screen.AWARESensorObserver() {
-                @Override
-                public void onScreenOn() {
-                    Log.d("mood", "ON");
-                }
-
-                @Override
-                public void onScreenOff() {
-
-                }
-
-                @Override
-                public void onScreenLocked() {
-
-                }
-
-                @Override
-                public void onScreenUnlocked() {
-
-                }
-            });*/
-
-            /*Intent applications = new Intent(this, Applications.class);
-            startService(applications);*/
 
             Applications.isAccessibilityServiceActive(getApplicationContext());
 
@@ -118,10 +109,12 @@ public class HomeActivity extends AppCompatActivity {
                             try {
                                 ESMFactory factory = new ESMFactory();
                                 ESM_PAM pam = new ESM_PAM();
-                                pam.setTitle("PAM");
+                                pam.setTitle("Mood Assessment");
                                 pam.setInstructions("Pick the closest to how you feel right now.");
                                 factory.addESM(pam);
                                 ESM.queueESM(getApplicationContext(), factory.build());
+                                JSONArray array = factory.getQueue();
+                                Log.d("esm_data", array.join("+"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -167,6 +160,13 @@ public class HomeActivity extends AppCompatActivity {
             finish();
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
 
     // Adapter for the viewpager using FragmentPagerAdapter
     class ViewPagerAdapter extends FragmentPagerAdapter {
