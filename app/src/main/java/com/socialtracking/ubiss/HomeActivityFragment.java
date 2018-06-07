@@ -1,11 +1,15 @@
 package com.socialtracking.ubiss;
 
+import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aware.Applications;
+import com.aware.providers.Applications_Provider;
+import com.aware.providers.ESM_Provider;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -14,6 +18,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -62,5 +68,57 @@ public class HomeActivityFragment extends Fragment {
 
         return rootview;
 
+    }
+
+    private void retrieveESMS() {
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY,0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+
+        Cursor cursor = getContext().getContentResolver().query(
+                ESM_Provider.ESM_Data.CONTENT_URI, null,
+                ESM_Provider.ESM_Data.TIMESTAMP + ">=" +today.getTimeInMillis(), null,
+                ESM_Provider.ESM_Data.TIMESTAMP + " ASC");
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+
+                String answer = cursor.getString(cursor.getColumnIndex(ESM_Provider.ESM_Data.ANSWER));
+
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+    }
+
+    private void retrieveData() {
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY,0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+
+        Cursor cursor = getContext().getContentResolver().query(
+                Applications_Provider.Applications_Foreground.CONTENT_URI, null,
+                Applications_Provider.Applications_Foreground.TIMESTAMP + ">=" +today.getTimeInMillis(), null,
+                Applications_Provider.Applications_Foreground.TIMESTAMP + " ASC");
+
+        HashMap<Double, Double> facebook_usage = new HashMap<>();
+
+        if (cursor != null && cursor.moveToFirst()) {
+
+            double elapsed = 0;
+            double timestamp_start = 0;
+
+            do {
+                if(cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals("com.facebook.katana")) {
+                    elapsed = 0;
+                    timestamp_start = cursor.getDouble(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.TIMESTAMP));
+                } else if (timestamp_start > 0 &&
+                        !cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals("com.facebook.katana")) {
+                    elapsed = cursor.getDouble(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.TIMESTAMP))-timestamp_start;
+                    facebook_usage.put(timestamp_start, elapsed);
+                    timestamp_start = 0;
+                }
+            } while (cursor.moveToNext());
+        }
     }
 }

@@ -106,8 +106,8 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public void onForeground(ContentValues contentValues) {
                     Log.d("mood", contentValues.toString());
-                    if((lastUsed != null)) {
-                        if (lastUsed.equals(FACEBOOK_PACKAGE) && !contentValues.get(FACEBOOK_PACKAGE).toString().equals(FACEBOOK_PACKAGE)) {
+                    if(lastUsed != null) {
+                        if (lastUsed.equals(FACEBOOK_PACKAGE) && !contentValues.get("package_name").toString().equals(FACEBOOK_PACKAGE)) {
                             createESM();
                         }
                     }
