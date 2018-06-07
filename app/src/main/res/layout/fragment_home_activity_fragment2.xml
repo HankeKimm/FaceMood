@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivityFragment2">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/purpose" />
+        android:id="@+id/title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/purpose"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="#fff"/>
 
     <com.github.mikephil.charting.charts.BarChart
+        android:layout_below="@+id/title2"
         android:id="@+id/purposeChart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_marginTop="30dp"
+        android:layout_height="350dp"/>
 
-
-</FrameLayout>
+</RelativeLayout>

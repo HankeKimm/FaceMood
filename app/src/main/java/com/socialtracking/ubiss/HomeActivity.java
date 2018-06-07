@@ -29,8 +29,8 @@ public class HomeActivity extends AppCompatActivity {
 
         // Add Fragments to adapter one by one
         adapter.addFragment(new HomeActivityFragment(), "Mood");
-        adapter.addFragment(new HomeActivityFragment2(), "Purpose");
-        adapter.addFragment(new HomeActivityFragment3(), "Statistics");
+        adapter.addFragment(new HomeActivityFragment2(), "Usage Purpose");
+        adapter.addFragment(new HomeActivityFragment3(), "Summary");
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);

@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivityFragment"
-    tools:showIn="@layout/activity_home">
+    tools:showIn="@layout/activity_home"
+    android:layout_marginTop="300dp">
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/mood"
-        android:textSize="40dp"
+        android:textSize="30dp"
         android:textStyle="bold"
-        android:textColor="#000"
-        android:layout_centerInParent="true"/>
+        android:textColor="#fff"/>
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/moodChart"
+        android:layout_below="@id/title"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="350dp"/>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

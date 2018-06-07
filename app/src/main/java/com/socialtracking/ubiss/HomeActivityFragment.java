@@ -1,7 +1,9 @@
 package com.socialtracking.ubiss;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,27 +40,32 @@ public class HomeActivityFragment extends Fragment {
         facebookEntries.add(new Entry(2f, 10));
         facebookEntries.add(new Entry(3f, 5));
 
-//        ArrayList<String> labels = new ArrayList<>();
-//        labels.add("Positive");
-//        labels.add("Negative");
-//        labels.add("Negative");
-//        labels.add("Positive");
+        int[] labels = new int[]{1, 0, 0, 1};
 
         LineDataSet dataset = new LineDataSet(facebookEntries, "Facebook usage (mins)");
         dataset.setDrawCircles(true);
         dataset.setDrawFilled(true);
-        dataset.setCubicIntensity(5);
+        dataset.disableDashedLine();
+        dataset.setCircleRadius(5);
+//        dataset.setCircleColor(R.drawable.happy);
+        dataset.setCircleHoleRadius(5);
+        dataset.setCircleColorHole(R.color.colorPrimaryDark);
 
-        ArrayList<Entry> moodEntries = new ArrayList<>();
-        moodEntries.add(new Entry(0f, 0));
-        moodEntries.add(new Entry(1f, 1));
-        moodEntries.add(new Entry(2f, 1));
-        moodEntries.add(new Entry(3f, 0));
 
-        LineDataSet dataset2 = new LineDataSet(moodEntries, "Mood");
-        dataset2.setDrawCircles(true);
 
-        LineData theDataset = new LineData(dataset, dataset2);
+//        for (int mood: labels) {
+//            if (mood == 1) {
+//                dataset.setCircleColorHole(R.color.primary);
+//                Log.d("HomeActivitye", "" + mood);
+//            } else {
+//                dataset.setCircleColorHole(R.color.accent);
+//
+//            }
+//        }
+
+
+
+        LineData theDataset = new LineData(dataset);
         chart.setData(theDataset);
 
         return rootview;
