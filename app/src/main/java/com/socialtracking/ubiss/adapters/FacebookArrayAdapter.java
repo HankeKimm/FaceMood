@@ -14,6 +14,9 @@ import android.widget.TextView;
 import com.socialtracking.ubiss.R;
 import com.socialtracking.ubiss.models.FacebookDataItem;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class FacebookArrayAdapter extends ArrayAdapter<FacebookDataItem> {
@@ -32,14 +35,22 @@ public class FacebookArrayAdapter extends ArrayAdapter<FacebookDataItem> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View row = convertView;
 
+        FacebookDataItem item = data.get(position);
+
         if (row == null) {
             row = LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
         }
 
             TextView textViewId = (TextView) row.findViewById(R.id.session_id);
-            textViewId.setText(data.get(position).getSessionId());
+            textViewId.setText(String.format("Session id: %s", item.getSessionId()));
+
             TextView textViewStart = (TextView) row.findViewById(R.id.session_start);
-            textViewStart.setText(String.valueOf(data.get(position).getSessionStart()));
+            Date currentDate = new Date(item.getSessionStart());
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            textViewStart.setText(String.format("Session start: %s", df.format(currentDate)));
+
+            TextView textViewLength = (TextView) row.findViewById(R.id.session_length);
+            textViewLength.setText(String.format("Session length: %s ms", item.getSessionLength()));
         return row;
     }
 }

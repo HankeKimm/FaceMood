@@ -19,4 +19,12 @@
         android:layout_margin="20dp"
         android:textSize="20sp"/>
 
+    <TextView
+        android:id="@+id/session_length"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/session_start"
+        android:layout_margin="20dp"
+        android:textSize="20sp"/>
+
 </RelativeLayout>
