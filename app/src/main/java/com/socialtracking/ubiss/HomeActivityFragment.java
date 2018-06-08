@@ -99,9 +99,8 @@ public class HomeActivityFragment extends Fragment {
             faceBookLineDataset.setDrawFilled(true);
             faceBookLineDataset.disableDashedLine();
             faceBookLineDataset.setCircleRadius(5);
-//        dataset.setCircleColor(R.drawable.happy);
             faceBookLineDataset.setCircleHoleRadius(5);
-//        dataset.setCircleColorHole(R.color.colorPrimaryDark);
+            faceBookLineDataset.setValueTextColor(0x7fffffff);
 
             ArrayList<String> positiveEmotions = new ArrayList<String>();
             positiveEmotions.add("excited");
@@ -131,8 +130,6 @@ public class HomeActivityFragment extends Fragment {
                     counter2 += 1;
                 }
             }
-
-
 
             LineData facebookLineData = new LineData(faceBookLineDataset);
             facebookUsagechart.setData(facebookLineData);
@@ -201,6 +198,7 @@ public class HomeActivityFragment extends Fragment {
             moodDataSet.disableDashedLine();
             moodDataSet.setCircleRadius(5);
             moodDataSet.setCircleHoleRadius(5);
+            moodDataSet.setValueTextColor(0x7fffffff);
 
 
             LineData moodLineData = new LineData(moodDataSet);
