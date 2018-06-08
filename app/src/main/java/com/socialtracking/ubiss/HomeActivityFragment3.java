@@ -42,30 +42,21 @@ public class HomeActivityFragment3 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_activity_fragment3, container, false);
-
         mListView = (ListView) view.findViewById(R.id.facebook_log_list_view);
-// 1
-        DataManager dataManager = new DataManager(getActivity());
-        List<FacebookDataItem> facebookLogList = dataManager.retrieveFacebookData();
-
-        //testList.add("Hanke");
-// 2
-        /*String[] listItems = new String[recipeList.size()];
-// 3
-        for(int i = 0; i < recipeList.size(); i++){
-            Recipe recipe = recipeList.get(i);
-            listItems[i] = recipe.title;
-        }*/
-// 4
-        ArrayAdapter adapter = new FacebookArrayAdapter(getActivity(), facebookLogList);
-
-        mListView.setAdapter(adapter);
-
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        DataManager dataManager = new DataManager(getActivity());
+        List<FacebookDataItem> facebookLogList = dataManager.retrieveFacebookData();
+
+        DataManager dataManager2 = new DataManager(getContext());
+        ArrayList<String> esmAnswers = dataManager.retrieveESMSData();
+
+        ArrayAdapter adapter = new FacebookArrayAdapter(getActivity(), facebookLogList, esmAnswers);
+
+        mListView.setAdapter(adapter);
     }
 }

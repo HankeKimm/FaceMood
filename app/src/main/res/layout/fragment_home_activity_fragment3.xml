@@ -11,5 +11,15 @@
         android:layout_width="match_parent">
     </ListView>
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Facebook Sessions"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        />
+
 
 </RelativeLayout>
