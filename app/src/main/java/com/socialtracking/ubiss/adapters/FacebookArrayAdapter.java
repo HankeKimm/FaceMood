@@ -60,24 +60,12 @@ public class FacebookArrayAdapter extends ArrayAdapter<FacebookDataItem> {
         positiveEmotions.add("satisfied");
         positiveEmotions.add("serene");
         positiveEmotions.add("sleepy");
-        positiveEmotions.add("afraid");
-        positiveEmotions.add("tense");
-        positiveEmotions.add("angry");
-        positiveEmotions.add("frustrated");
-        positiveEmotions.add("miserable");
-        positiveEmotions.add("sad");
-        positiveEmotions.add("tired");
-        positiveEmotions.add("gloomy");
 
-//        if(positiveEmotions.contains(mood))
-//            image.setImageResource(R.drawable.happy);
 
-        if(mood.equals("afraid")){
-            image.setImageResource(R.drawable.afraid);
-        }else if (mood.equals("tense")) {
-            image.setImageResource(R.drawable.tense);
+        if(positiveEmotions.contains(mood)){
+            image.setImageResource(R.drawable.positive);
         }else{
-            image.setImageResource(R.drawable.happy);
+            image.setImageResource(R.drawable.negative);
         }
 
 //        TextView textViewId = (TextView) row.findViewById(R.id.session_id);
@@ -90,6 +78,12 @@ public class FacebookArrayAdapter extends ArrayAdapter<FacebookDataItem> {
 
         TextView textViewLength = (TextView) row.findViewById(R.id.session_length);
         textViewLength.setText(String.format("Usage lenght: %s minutes", item.getSessionLength()));
+
+//        TextView facebookUsage = (TextView) row.findViewById(R.id.totalUsage);
+//
+//        int minutes = 0;
+//
+//        facebookUsage.setText(String.format("Today you have used facebook for %s minutes.", minutes);
 
 
         return row;

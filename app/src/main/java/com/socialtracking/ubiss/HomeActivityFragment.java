@@ -46,7 +46,7 @@ public class HomeActivityFragment extends Fragment {
 
         DataManager dataManager = new DataManager(getContext());
         ArrayList<String> esmAnswers = dataManager.retrieveESMSData();
-
+        esmAnswers.add("excited");
 
         /*
         Negative and Positive emotions
@@ -78,6 +78,8 @@ public class HomeActivityFragment extends Fragment {
          */
 
         List<Entry> moodEntries = new ArrayList<>();
+        moodEntries.add(new Entry(0, 0));
+
 
         int counter = 0;
         for (String s: esmAnswers){
@@ -110,9 +112,11 @@ public class HomeActivityFragment extends Fragment {
          */
 
         List<Entry> facebookData = new ArrayList<>();
+//        facebookData.add(new Entry(0,  (float) 0));
 
         List<FacebookDataItem> facebookUsageData = dataManager.retrieveFacebookData();
 
+//        if(!facebookUsageData.isEmpty()){
 
         float counter2 = 0;
         for(FacebookDataItem dataItem : facebookUsageData) {
@@ -121,7 +125,7 @@ public class HomeActivityFragment extends Fragment {
             double timestamp = dataItem.getSessionStart();
             double value = dataItem.getSessionLength();
 
-            facebookData.add(new Entry(counter2,  (float) value, R.drawable.happy));
+            facebookData.add(new Entry(counter2,  (float) value));
             counter2 += 1;
         }
 
@@ -138,6 +142,10 @@ public class HomeActivityFragment extends Fragment {
 
         LineData theDataset2 = new LineData(dataset2);
         facebookUsagechart.setData(theDataset2);
+
+
+
+//        }
 
         return rootview;
 

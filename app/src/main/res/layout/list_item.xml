@@ -6,9 +6,35 @@
     <ImageView
         android:id="@+id/moodImage"
         android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_height="100dp"
         android:layout_margin="20dp"
         />
+
+    <LinearLayout
+        android:id="@+id/textPart"
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        android:layout_toRightOf="@id/moodImage"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp">
+
+        <TextView
+            android:id="@+id/session_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/session_length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_below="@id/session_start"
+            android:layout_margin="20dp"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
 
     <!--<TextView-->
         <!--android:id="@+id/session_id"-->
@@ -18,20 +44,7 @@
         <!--android:layout_margin="20dp"-->
         <!--android:textSize="20sp"-->
         <!--android:textStyle="bold"/>-->
-    <TextView
-        android:id="@+id/session_start"
-        android:layout_toRightOf="@id/moodImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:textSize="20sp"/>
 
-    <TextView
-        android:id="@+id/session_length"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/session_start"
-        android:layout_margin="20dp"
-        android:textSize="20sp"/>
+
 
 </RelativeLayout>

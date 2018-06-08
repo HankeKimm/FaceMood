@@ -12,7 +12,8 @@
         android:text="@string/purpose"
         android:textSize="30dp"
         android:textStyle="bold"
-        android:textColor="#fff"/>
+        android:textColor="#fff"
+        android:layout_margin="50dp"/>
 
     <com.github.mikephil.charting.charts.BarChart
         android:layout_below="@+id/title2"
