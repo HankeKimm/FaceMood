@@ -6,9 +6,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,21 +17,21 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 
 import com.aware.Applications;
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
 import com.aware.ESM;
+import com.aware.Keyboard;
+import com.aware.providers.Keyboard_Provider;
 import com.aware.ui.PermissionsHandler;
 import com.aware.ui.esms.ESMFactory;
 import com.aware.ui.esms.ESM_PAM;
-import com.google.gson.JsonArray;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
@@ -82,11 +81,9 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-
         ArrayList<String> REQUIRED_PERMISSIONS = new ArrayList<>();
         REQUIRED_PERMISSIONS.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
+        retrieveKeyboardData();
         boolean permissions_ok = true;
         for (String p : REQUIRED_PERMISSIONS) { //loop to check all the required permissions.
             if (PermissionChecker.checkSelfPermission(this, p) != PermissionChecker.PERMISSION_GRANTED) {
@@ -98,6 +95,9 @@ public class HomeActivity extends AppCompatActivity {
         if (permissions_ok) {
             Aware.setSetting(this, Aware_Preferences.DEBUG_FLAG, true);
             Aware.setSetting(this, Aware_Preferences.STATUS_APPLICATIONS, true);
+            Aware.setSetting(this, Aware_Preferences.STATUS_KEYBOARD, true);
+
+            Aware.startKeyboard(this);
 
             Applications.isAccessibilityServiceActive(getApplicationContext());
 
@@ -105,13 +105,22 @@ public class HomeActivity extends AppCompatActivity {
             Applications.setSensorObserver(new Applications.AWARESensorObserver() {
                 @Override
                 public void onForeground(ContentValues contentValues) {
-                    Log.d("mood", contentValues.toString());
+                    Log.d("mood_foreground", contentValues.toString());
                     if(lastUsed != null) {
                         if (lastUsed.equals(FACEBOOK_PACKAGE) && !contentValues.get("package_name").toString().equals(FACEBOOK_PACKAGE)) {
+
+                            unregisterReceiver(keyboardListener);
+
                             createESM();
                         }
                     }
-                    lastUsed = contentValues.get("package_name").toString();
+                    if (!contentValues.getAsString("package_name").equals("com.sohu.inputmethod.sogou.xiaomi")) {
+                        lastUsed = contentValues.get("package_name").toString();
+                        if (lastUsed.equals("com.facebook.katana")) {
+                            IntentFilter keyboardFilter = new IntentFilter(Keyboard.ACTION_AWARE_KEYBOARD);
+                            registerReceiver(keyboardListener, keyboardFilter);
+                        }
+                    }
                 }
 
                 @Override
@@ -149,6 +158,17 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(permissions);
 
             finish();
+        }
+    }
+
+    private static KeyboardListener keyboardListener = new KeyboardListener();
+    public static class KeyboardListener extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Keyboard.ACTION_AWARE_KEYBOARD)) {
+                //using keyboard in facebook
+                Log.d("aware", "using keyboard inside facebook");
+            }
         }
     }
 
@@ -197,8 +217,31 @@ public class HomeActivity extends AppCompatActivity {
             pam.setInstructions("Pick the closest to how you feel right now.");
             factory.addESM(pam);
             ESM.queueESM(getApplicationContext(), factory.build());
+
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void retrieveKeyboardData() {
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY,0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+
+
+        Cursor cursor = getApplicationContext().getContentResolver().query(
+                Keyboard_Provider.Keyboard_Data.CONTENT_URI, null,
+                Keyboard_Provider.Keyboard_Data.PACKAGE_NAME +"="+"'com.facebook.katana'",null,
+                Keyboard_Provider.Keyboard_Data.TIMESTAMP + " ASC");
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+
+                Long answer = cursor.getLong(cursor.getColumnIndex(Keyboard_Provider.Keyboard_Data.TIMESTAMP));
+                Log.d("mood_keyboard",Long.toString(answer));
+
+            } while (cursor.moveToNext());
+            cursor.close();
         }
     }
 

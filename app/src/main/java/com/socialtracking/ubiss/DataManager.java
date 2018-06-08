@@ -2,9 +2,12 @@ package com.socialtracking.ubiss;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.util.Log;
 
 import com.aware.providers.Applications_Provider;
 import com.aware.providers.ESM_Provider;
+import com.aware.providers.Keyboard_Provider;
 import com.socialtracking.ubiss.models.FacebookDataItem;
 
 import java.util.ArrayList;
@@ -39,6 +42,42 @@ public class DataManager {
             } while (cursor.moveToNext());
             cursor.close();
         }
+    }
+
+    public boolean retrieveKeyboardData(long sessionStart, double sessionLength) {
+
+        long sessionEnd = sessionStart + (long)sessionLength;
+        Log.d("mood_sessionStart",Long.toString(sessionStart));
+        Log.d("mood_SessionEnd",Long.toString(sessionEnd));
+
+        Cursor cursor = context.getContentResolver().query(
+                Keyboard_Provider.Keyboard_Data.CONTENT_URI, null,
+                Keyboard_Provider.Keyboard_Data.TIMESTAMP + ">=" + sessionStart + " AND " +
+                        Keyboard_Provider.Keyboard_Data.TIMESTAMP + "<=" +sessionEnd, null,
+                Keyboard_Provider.Keyboard_Data.TIMESTAMP + " ASC");
+        if (cursor != null && cursor.moveToFirst()) {
+
+            Log.d("debug", DatabaseUtils.dumpCursorToString(cursor));
+
+            do {
+
+                String answer = cursor.getString(cursor.getColumnIndex(Keyboard_Provider.Keyboard_Data.PACKAGE_NAME));
+                Log.d("mood_PackageName",answer);
+                if (answer.equals("com.facebook.katana"))
+                {
+                    cursor.close();
+                    return true;
+                }
+                else
+                    continue;
+
+            } while (cursor.moveToNext());
+            cursor.close();
+            return false;
+        } else{
+            return false;
+        }
+
     }
 
     public List<FacebookDataItem> retrieveFacebookData() {
