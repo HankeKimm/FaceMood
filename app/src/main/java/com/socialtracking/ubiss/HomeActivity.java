@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -37,7 +38,6 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity {
 
     private static String lastUsed = null;
-    private BroadcastReceiver receiver;
 
     private final String FACEBOOK_PACKAGE = "com.facebook.katana";
 
@@ -60,15 +60,7 @@ public class HomeActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                finish();
-            }
-        };
-
         IntentFilter filter = new IntentFilter();
-        filter.addAction(ESM.ACTION_AWARE_ESM_QUEUE_COMPLETE);
         filter.addAction(ESM.ACTION_AWARE_ESM_ANSWERED);
         filter.addAction(ESM.ACTION_AWARE_ESM_DISMISSED);
         this.registerReceiver(receiver, filter);
@@ -77,6 +69,19 @@ public class HomeActivity extends AppCompatActivity {
 //        correlate.correlation(x,y);
 
 
+    }
+
+    private ESMListener receiver = new ESMListener();
+    public class ESMListener extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+            context.startActivity(
+                    new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
+                            .setPackage(context.getPackageManager()
+                                    .queryIntentActivities(new Intent(Intent.ACTION_MAIN)
+                                            .addCategory(Intent.CATEGORY_HOME), PackageManager.MATCH_DEFAULT_ONLY).get(0).activityInfo.packageName));
+        }
     }
 
     @Override
