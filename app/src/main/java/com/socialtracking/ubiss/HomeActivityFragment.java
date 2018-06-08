@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,6 @@ import java.util.List;
  */
 public class HomeActivityFragment extends Fragment {
 
-
     public HomeActivityFragment() {
     }
 
@@ -48,8 +48,10 @@ public class HomeActivityFragment extends Fragment {
 
         //Creating Facebook Usage Chart.
         createFacebookUsageChart(dataManager, rootView);
-        //Creating Mood Chart.
-        createMoodChart(dataManager, rootView);
+
+
+//        //Creating Mood Chart.
+//        createMoodChart(dataManager, rootView);
 
         return rootView;
 
@@ -77,6 +79,8 @@ public class HomeActivityFragment extends Fragment {
         List<Entry> facebookData = new ArrayList<>();
 
         List<FacebookDataItem> facebookUsageData = dataManager.retrieveFacebookData();
+        List<String> esmAnswers = dataManager.retrieveESMSData();
+
 
         float xPointCounter = 0;
         for(FacebookDataItem dataItem : facebookUsageData) {
@@ -98,6 +102,36 @@ public class HomeActivityFragment extends Fragment {
 //        dataset.setCircleColor(R.drawable.happy);
             faceBookLineDataset.setCircleHoleRadius(5);
 //        dataset.setCircleColorHole(R.color.colorPrimaryDark);
+
+            ArrayList<String> positiveEmotions = new ArrayList<String>();
+            positiveEmotions.add("excited");
+            positiveEmotions.add("delighted");
+            positiveEmotions.add("happy");
+            positiveEmotions.add("glad");
+            positiveEmotions.add("calm");
+            positiveEmotions.add("satisfied");
+            positiveEmotions.add("serene");
+            positiveEmotions.add("sleepy");
+
+
+             /*
+            Setting the smiley for each point
+             */
+
+            if(!esmAnswers.isEmpty()){
+                int counter2 = 0;
+                for (String s: esmAnswers){
+                    if(positiveEmotions.contains(s)){
+                        faceBookLineDataset.getEntryForIndex(counter2).setIcon(ContextCompat.getDrawable(getContext(), R.drawable.happy2));
+                    }
+                    else{
+                        faceBookLineDataset.getEntryForIndex(counter2).setIcon(ContextCompat.getDrawable(getContext(), R.drawable.sad));
+                    }
+
+                    counter2 += 1;
+                }
+            }
+
 
 
             LineData facebookLineData = new LineData(faceBookLineDataset);
@@ -148,15 +182,15 @@ public class HomeActivityFragment extends Fragment {
         List<Entry> moodEntries = new ArrayList<>();
 //        moodEntries.add(new Entry(0, 0));
 
-        int counter = 0;
-        for (String s: esmAnswers){
-            //If emotion in positive emotions set 0
-            if(positiveEmotions.contains(s))
-                moodEntries.add(new Entry(counter, 0));
-            else
-                moodEntries.add(new Entry(counter, 1));
-            counter += 1;
-        }
+//        int counter = 0;
+//        for (String s: esmAnswers){
+//            //If emotion in positive emotions set 0
+//            if(positiveEmotions.contains(s))
+//                moodEntries.add(new Entry(counter, 0));
+//            else
+//                moodEntries.add(new Entry(counter, 1));
+//            counter += 1;
+//        }
 
         if(moodEntries.isEmpty()) {
             moodChart.setNoDataText("Chart is Empty. Start using Facebook to see some data!");
@@ -167,6 +201,7 @@ public class HomeActivityFragment extends Fragment {
             moodDataSet.disableDashedLine();
             moodDataSet.setCircleRadius(5);
             moodDataSet.setCircleHoleRadius(5);
+
 
             LineData moodLineData = new LineData(moodDataSet);
             moodChart.setData(moodLineData);
