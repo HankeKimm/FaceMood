@@ -35,4 +35,5 @@ public class FacebookDataItem {
     public void setSessionLength(double sessionLength) {
         this.sessionLength = sessionLength/1000/60%60;
     }
+
 }

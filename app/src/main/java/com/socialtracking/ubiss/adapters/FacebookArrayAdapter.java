@@ -15,7 +15,9 @@ import android.widget.TextView;
 import com.socialtracking.ubiss.R;
 import com.socialtracking.ubiss.models.FacebookDataItem;
 
+import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,17 +75,15 @@ public class FacebookArrayAdapter extends ArrayAdapter<FacebookDataItem> {
 
         TextView textViewStart = (TextView) row.findViewById(R.id.session_start);
         Date currentDate = new Date(item.getSessionStart());
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        textViewStart.setText(String.format("Time accessed: %s", df.format(currentDate)));
+        DateFormat df = new SimpleDateFormat("HH:mm:ss");
+        textViewStart.setText(String.format("Time: %s", df.format(currentDate)));
 
         TextView textViewLength = (TextView) row.findViewById(R.id.session_length);
-        textViewLength.setText(String.format("Usage lenght: %s minutes", item.getSessionLength()));
 
-//        TextView facebookUsage = (TextView) row.findViewById(R.id.totalUsage);
-//
-//        int minutes = 0;
-//
-//        facebookUsage.setText(String.format("Today you have used facebook for %s minutes.", minutes);
+        DecimalFormat dformat = new DecimalFormat("#.###");
+        dformat.setRoundingMode(RoundingMode.CEILING);
+
+        textViewLength.setText(String.format("Length: %s min", dformat.format(item.getSessionLength())));
 
 
         return row;

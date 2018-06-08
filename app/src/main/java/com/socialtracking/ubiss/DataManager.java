@@ -2,11 +2,13 @@ package com.socialtracking.ubiss;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.util.Log;
 
 import com.aware.ESM;
 import com.aware.providers.Applications_Provider;
 import com.aware.providers.ESM_Provider;
+import com.aware.providers.Keyboard_Provider;
 import com.socialtracking.ubiss.models.FacebookDataItem;
 
 import java.util.ArrayList;
@@ -49,6 +51,42 @@ public class DataManager {
         return ESM_answers;
     }
 
+    public boolean retrieveKeyboardData(long sessionStart, double sessionLength) {
+
+        long sessionEnd = sessionStart + (long)sessionLength;
+        Log.d("mood_sessionStart",Long.toString(sessionStart));
+        Log.d("mood_SessionEnd",Long.toString(sessionEnd));
+
+        Cursor cursor = context.getContentResolver().query(
+                Keyboard_Provider.Keyboard_Data.CONTENT_URI, null,
+                Keyboard_Provider.Keyboard_Data.TIMESTAMP + ">=" + sessionStart + " AND " +
+                        Keyboard_Provider.Keyboard_Data.TIMESTAMP + "<=" +sessionEnd, null,
+                Keyboard_Provider.Keyboard_Data.TIMESTAMP + " ASC");
+        if (cursor != null && cursor.moveToFirst()) {
+
+            Log.d("debug", DatabaseUtils.dumpCursorToString(cursor));
+
+            do {
+
+                String answer = cursor.getString(cursor.getColumnIndex(Keyboard_Provider.Keyboard_Data.PACKAGE_NAME));
+                Log.d("mood_PackageName",answer);
+                if (answer.equals("com.facebook.katana"))
+                {
+                    cursor.close();
+                    return true;
+                }
+                else
+                    continue;
+
+            } while (cursor.moveToNext());
+            cursor.close();
+            return false;
+        } else{
+            return false;
+        }
+
+    }
+
     public List<FacebookDataItem> retrieveFacebookData() {
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY,0);
@@ -83,43 +121,5 @@ public class DataManager {
         }
         return facebookUsageList;
     }
-
-
-    public HashMap<Double, Double> retrieveFacebookData2() {
-        Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY,0);
-        today.set(Calendar.MINUTE, 0);
-        today.set(Calendar.SECOND, 0);
-
-        Cursor cursor = context.getContentResolver().query(
-                Applications_Provider.Applications_Foreground.CONTENT_URI, null,
-                Applications_Provider.Applications_Foreground.TIMESTAMP + ">=" +today.getTimeInMillis(), null,
-                Applications_Provider.Applications_Foreground.TIMESTAMP + " ASC");
-
-        HashMap<Double, Double> facebook_usage = new HashMap<>();
-
-        if (cursor != null && cursor.moveToFirst()) {
-
-            double elapsed = 0;
-            double timestamp_start = 0;
-
-            do {
-                if(cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals("com.facebook.katana")) {
-                    elapsed = 0;
-                    timestamp_start = cursor.getDouble(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.TIMESTAMP));
-                } else if (timestamp_start > 0 &&
-                        !cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals("com.facebook.katana")) {
-                    elapsed = cursor.getDouble(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.TIMESTAMP))-timestamp_start;
-                    facebook_usage.put(timestamp_start, elapsed);
-                    timestamp_start = 0;
-                }
-
-                Log.d("DataManager", timestamp_start + "");
-
-
-            } while (cursor.moveToNext());
-        }
-
-        return facebook_usage;
-    }
+    
 }

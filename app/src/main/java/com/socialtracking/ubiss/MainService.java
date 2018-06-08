@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.aware.Applications;
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
+import com.aware.Keyboard;
+import com.aware.providers.Applications_Provider;
 
 public class MainService extends Service {
 
@@ -29,7 +31,11 @@ public class MainService extends Service {
         Applications.setSensorObserver(new Applications.AWARESensorObserver() {
             @Override
             public void onForeground(ContentValues contentValues) {
-                Log.d("mood", contentValues.toString());
+
+                if (contentValues.getAsString(Applications_Provider.Applications_Foreground.PACKAGE_NAME).equals("com.facebook.katana")) {
+                    Aware.startKeyboard(getApplicationContext());
+
+                }
             }
 
             @Override
