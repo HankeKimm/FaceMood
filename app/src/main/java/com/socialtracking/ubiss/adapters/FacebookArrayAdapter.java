@@ -85,7 +85,6 @@ public class FacebookArrayAdapter extends ArrayAdapter<FacebookDataItem> {
 
         textViewLength.setText(String.format("Length: %s min", dformat.format(item.getSessionLength())));
 
-
         return row;
     }
 }

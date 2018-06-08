@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                moveTaskToBack(true);
+                finish();
             }
         };
 
