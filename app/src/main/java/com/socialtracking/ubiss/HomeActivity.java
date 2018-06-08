@@ -63,13 +63,10 @@ public class HomeActivity extends AppCompatActivity {
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                //Intent homeIntent = new Intent(HomeActivity.this, HomeActivity.class);
-                //finish();
-                //Return to home screen for now. We may change this later.
                 moveTaskToBack(true);
-                //tartActivity(homeIntent);
             }
         };
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(ESM.ACTION_AWARE_ESM_QUEUE_COMPLETE);
         filter.addAction(ESM.ACTION_AWARE_ESM_ANSWERED);
@@ -217,7 +214,6 @@ public class HomeActivity extends AppCompatActivity {
             pam.setInstructions("Pick the closest to how you feel right now.");
             factory.addESM(pam);
             ESM.queueESM(getApplicationContext(), factory.build());
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
