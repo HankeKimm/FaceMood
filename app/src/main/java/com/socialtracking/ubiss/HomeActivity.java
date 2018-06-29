@@ -44,29 +44,29 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setContentView(R.layout.activity_home);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+//        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+//        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         // Add Fragments to adapter one by one
-        adapter.addFragment(new HomeActivityFragment(), "Mood");
-        adapter.addFragment(new HomeActivityFragment2(), "Usage Purpose");
-        adapter.addFragment(new HomeActivityFragment3(), "Summary");
-        viewPager.setAdapter(adapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+//        adapter.addFragment(new HomeActivityFragment(), "Mood");
+//        adapter.addFragment(new HomeActivityFragment2(), "Usage Purpose");
+//        adapter.addFragment(new HomeActivityFragment3(), "Summary");
+//        viewPager.setAdapter(adapter);
+//
+//        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+//        tabLayout.setupWithViewPager(viewPager);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(ESM.ACTION_AWARE_ESM_ANSWERED);
         filter.addAction(ESM.ACTION_AWARE_ESM_DISMISSED);
         this.registerReceiver(receiver, filter);
 
-//        PearsonsCorrelation correlate=new PearsonsCorrelation();
-//        correlate.correlation(x,y);
+        Aware.startAWARE(this);
+        startActivity(new Intent(this, MainActivity.class));
 
 
     }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SurveysFragment"
+    android:layout_gravity="center"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/phq8"
+        android:layout_margin="10dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="PHQ-8"/>
+
+    <Button
+        android:id="@+id/phq4"
+        android:layout_below="@id/phq8"
+        android:layout_margin="10dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="PHQ-4"/>
+
+    <Button
+        android:id="@+id/panas"
+        android:layout_below="@id/phq4"
+        android:layout_margin="10dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="PANAS"/>
+
+    <Button
+        android:id="@+id/big5"
+        android:layout_below="@id/panas"
+        android:layout_margin="10dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Big 5"/>
+
+    <!--<Button-->
+        <!--android:id="@+id/pam"-->
+        <!--android:layout_below="@id/big5"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="PAM"/>-->
+
+
+</RelativeLayout>

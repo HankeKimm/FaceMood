@@ -3,7 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivityFragment2">
+    tools:context=".HomeActivityFragment2"
+    android:layout_marginTop="50dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginBottom="10dp">
 
     <TextView
         android:id="@+id/title2"
@@ -13,7 +17,7 @@
         android:textSize="30dp"
         android:textStyle="bold"
         android:textColor="#fff"
-        android:layout_margin="50dp"/>
+        />
 
     <com.github.mikephil.charting.charts.BarChart
         android:layout_below="@+id/title2"
