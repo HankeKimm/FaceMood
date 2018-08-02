@@ -48,6 +48,7 @@ public class HomeActivityFragment3 extends Fragment {
 
         facebookUsage = (TextView) view.findViewById(R.id.totalUsage);
 
+
 //        DataManager dataManager = new DataManager(getActivity());
 //        List<FacebookDataItem> facebookLogList = dataManager.retrieveFacebookData();
 
@@ -70,7 +71,7 @@ public class HomeActivityFragment3 extends Fragment {
             minutes += item.getSessionLength();
         }
 
-        facebookUsage.setText(String.format("Today you have used facebook for %s minutes. The average daily usage of facebook is 34 minutes per day.", minutes));
+        facebookUsage.setText(String.format("Today you have used social media applications for %s minutes. The average daily usage of social media is 34 minutes per day.", minutes));
 
 
         mListView.setAdapter(adapter);

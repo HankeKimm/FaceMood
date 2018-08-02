@@ -94,7 +94,7 @@ public class HomeActivityFragment extends Fragment {
         if(facebookData.isEmpty()) {
             facebookUsagechart.setNoDataText("Chart is Empty. Start using Facebook to see some data!");
         } else {
-            LineDataSet faceBookLineDataset = new LineDataSet(facebookData, "Facebook usage (mins)");
+            LineDataSet faceBookLineDataset = new LineDataSet(facebookData, "Social media usage (mins)");
             faceBookLineDataset.setDrawCircles(true);
             faceBookLineDataset.setDrawFilled(true);
             faceBookLineDataset.disableDashedLine();

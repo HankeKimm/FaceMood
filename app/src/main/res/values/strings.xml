@@ -4,8 +4,8 @@
     <string name="title_activity_home">Moodbook</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="purpose">Facebook Activity</string>
-    <string name="mood">Facebook and Mood</string>
+    <string name="purpose">Social Media Activity</string>
+    <string name="mood">Social media and Mood</string>
     <string name="statistics">Usage Summary</string>
     <string name="totalUsageText"> You have used facebook for </string>
 
@@ -14,8 +14,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
 
 
 </resources>

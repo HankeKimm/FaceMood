@@ -21,6 +21,16 @@ public class DataManager {
 
     private Context context;
 
+    private final String FACEBOOK_PACKAGE = "com.facebook.katana";
+    private final String TWITTER_PACKAGE = "com.twitter.android";
+    private final String INSTAGRAM_PACKAGE = "com.instagram.android";
+    private final String MESSENGER_PACKAGE = "com.facebook.orca";
+    private final String SNAPCHAT_PACKAGE = "com.snapchat.android";
+    private final String DUO_PACKAGE = "com.google.android.apps.tachyon";
+    private final String WHATSAPP_PACKAGE = "com.whatsapp";
+    private final String VIBER_PACKAGE = "com.viber.voip";
+
+
     public DataManager(Context context) {
         this.context = context;
     }
@@ -70,8 +80,8 @@ public class DataManager {
 
                 String answer = cursor.getString(cursor.getColumnIndex(Keyboard_Provider.Keyboard_Data.PACKAGE_NAME));
                 Log.d("mood_PackageName",answer);
-                if (answer.equals("com.facebook.katana"))
-                {
+                if (answer.equals(FACEBOOK_PACKAGE) || answer.equals(TWITTER_PACKAGE) || answer.equals(MESSENGER_PACKAGE) || answer.equals(INSTAGRAM_PACKAGE) ||
+                        answer.equals(DUO_PACKAGE) || answer.equals(VIBER_PACKAGE) || answer.equals(WHATSAPP_PACKAGE) || answer.equals(SNAPCHAT_PACKAGE)) {
                     cursor.close();
                     return true;
                 }
@@ -105,21 +115,36 @@ public class DataManager {
             double elapsed;
             long timestamp_start = 0;
             String sessionId = null;
+            String socialMediaApp = null;
 
             do {
-                if(cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals("com.facebook.katana")) {
+                if(cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(FACEBOOK_PACKAGE) ||
+                        cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(TWITTER_PACKAGE) ||
+                        cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(INSTAGRAM_PACKAGE) ||
+                        cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(DUO_PACKAGE) ||
+                        cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(MESSENGER_PACKAGE)||
+                        cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(WHATSAPP_PACKAGE) ||
+                        cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(VIBER_PACKAGE)||
+                        cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(SNAPCHAT_PACKAGE)) {
                     elapsed = 0;
                     timestamp_start = cursor.getLong(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.TIMESTAMP));
                     sessionId = cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground._ID));
                 } else if (timestamp_start > 0
-                        && !cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals("com.facebook.katana")) {
+                        && (!cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(FACEBOOK_PACKAGE) ||
+                        !cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(TWITTER_PACKAGE) ||
+                        !cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(INSTAGRAM_PACKAGE) ||
+                        !cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(DUO_PACKAGE) ||
+                        !cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(MESSENGER_PACKAGE) ||
+                        !cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(WHATSAPP_PACKAGE) ||
+                        !cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(VIBER_PACKAGE) ||
+                        !cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME)).equals(SNAPCHAT_PACKAGE))) {
                     elapsed = cursor.getDouble(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.TIMESTAMP)) - timestamp_start;
-                    facebookUsageList.add(new FacebookDataItem(sessionId, timestamp_start, elapsed));
+                    socialMediaApp = cursor.getString(cursor.getColumnIndex(Applications_Provider.Applications_Foreground.PACKAGE_NAME));
+                    facebookUsageList.add(new FacebookDataItem(sessionId, socialMediaApp, timestamp_start, elapsed));
                     timestamp_start = 0;
                 }
             } while (cursor.moveToNext());
         }
         return facebookUsageList;
     }
-    
 }

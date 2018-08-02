@@ -73,6 +73,15 @@ public class FacebookArrayAdapter extends ArrayAdapter<FacebookDataItem> {
 //        TextView textViewId = (TextView) row.findViewById(R.id.session_id);
 //        textViewId.setText(String.format("Session id: %s", item.getSessionId()));
 
+
+        /*
+        TO DO
+        CHANGE THIS TO RETRIEVE ONLY SOCIAL MEDIA APPS WE CONSIDER
+         */
+        TextView textViewSocialMediaApp = (TextView) row.findViewById(R.id.social_media_app);
+        textViewSocialMediaApp.setText(String.format("%s", item.getSocialMediaApplication()));
+
+
         TextView textViewStart = (TextView) row.findViewById(R.id.session_start);
         Date currentDate = new Date(item.getSessionStart());
         DateFormat df = new SimpleDateFormat("HH:mm:ss");

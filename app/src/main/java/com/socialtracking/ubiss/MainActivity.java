@@ -23,30 +23,25 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.aware.Applications;
-import com.aware.Aware;
-import com.aware.Aware_Preferences;
 import com.aware.ESM;
-import com.aware.Keyboard;
-import com.aware.providers.Keyboard_Provider;
-import com.aware.ui.PermissionsHandler;
+import com.aware.Screen;
 import com.aware.ui.esms.ESMFactory;
 import com.aware.ui.esms.ESM_PAM;
+import com.aware.utils.Scheduler;
 import com.socialtracking.ubiss.Fragments.AboutFragment;
 import com.socialtracking.ubiss.Fragments.ProfileFragment;
 import com.socialtracking.ubiss.Fragments.RegisterFragment;
 import com.socialtracking.ubiss.Fragments.WelcomeFragment;
 import com.socialtracking.ubiss.LocalDataStorage.DatabaseHelper;
+import com.socialtracking.ubiss.Reminders.FinalScheduler;
 import com.socialtracking.ubiss.User.UsersContract;
+
 
 import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SimpleDateFormat dayFormat;
     int month;
     int dayOfMonth;
-//    FinalScheduler scheduler;
+    FinalScheduler scheduler;
 
     String android_id;
 
@@ -91,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //Triger reminders for uploading data and completing surveys
-//        triggerReminders();
+        triggerReminders();
 
     }
 
@@ -220,22 +215,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-//    public void triggerReminders(){
-//        dayFormat = new SimpleDateFormat("EEEE", Locale.US);
-//        calendar = Calendar.getInstance();
-//        weekday = dayFormat.format(calendar.getTime());
-//        scheduler = new FinalScheduler();
-//        month = calendar.get(Calendar.MONTH);
-//        dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-//
-//
-//        //January - 0
-//        if(month == Calendar.OCTOBER && dayOfMonth >= 1 && dayOfMonth <= 8){
-//            Log.v("Homeee", "Alarms Triggered");
-//            scheduler.createReminder(getApplicationContext());
+    public void triggerReminders(){
+        dayFormat = new SimpleDateFormat("EEEE", Locale.US);
+        calendar = Calendar.getInstance();
+        weekday = dayFormat.format(calendar.getTime());
+        scheduler = new FinalScheduler();
+        month = calendar.get(Calendar.MONTH);
+        dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+
+        //January - 0
+        if(month == Calendar.JULY && dayOfMonth >= 1 && dayOfMonth <= 30){
+            Log.v("Homeee", "Alarms Triggered");
+            scheduler.createReminder(getApplicationContext());
 //            uploadDataEveryday();
-//        }
-//    }
+        }
+    }
+
 
 //    public void uploadDataEveryday(){
 //

@@ -40,6 +40,15 @@ public class HomeActivity extends AppCompatActivity {
     private static String lastUsed = null;
 
     private final String FACEBOOK_PACKAGE = "com.facebook.katana";
+    private final String TWITTER_PACKAGE = "com.twitter.android";
+    private final String INSTAGRAM_PACKAGE = "com.instagram.android";
+    private final String MESSENGER_PACKAGE = "com.facebook.orca";
+    private final String SNAPCHAT_PACKAGE = "com.snapchat.android";
+    private final String DUO_PACKAGE = "com.google.android.apps.tachyon";
+    private final String WHATSAPP_PACKAGE = "com.whatsapp";
+    private final String VIBER_PACKAGE = "com.viber.voip";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +122,14 @@ public class HomeActivity extends AppCompatActivity {
                 public void onForeground(ContentValues contentValues) {
                     Log.d("mood_foreground", contentValues.toString());
                     if(lastUsed != null) {
-                        if (lastUsed.equals(FACEBOOK_PACKAGE) && !contentValues.get("package_name").toString().equals(FACEBOOK_PACKAGE)) {
+                        if ((lastUsed.equals(FACEBOOK_PACKAGE) && !contentValues.get("package_name").toString().equals(FACEBOOK_PACKAGE)) ||
+                                (lastUsed.equals(TWITTER_PACKAGE) && !contentValues.get("package_name").toString().equals(TWITTER_PACKAGE)) ||
+                                (lastUsed.equals(WHATSAPP_PACKAGE) && !contentValues.get("package_name").toString().equals(WHATSAPP_PACKAGE)) ||
+                                (lastUsed.equals(VIBER_PACKAGE) && !contentValues.get("package_name").toString().equals(VIBER_PACKAGE))||
+                                (lastUsed.equals(DUO_PACKAGE) && !contentValues.get("package_name").toString().equals(DUO_PACKAGE))||
+                                (lastUsed.equals(SNAPCHAT_PACKAGE) && !contentValues.get("package_name").toString().equals(SNAPCHAT_PACKAGE))||
+                                (lastUsed.equals(INSTAGRAM_PACKAGE) && !contentValues.get("package_name").toString().equals(INSTAGRAM_PACKAGE)) ||
+                                (lastUsed.equals(MESSENGER_PACKAGE) && !contentValues.get("package_name").toString().equals(MESSENGER_PACKAGE))) {
 
                             unregisterReceiver(keyboardListener);
 
@@ -122,7 +138,8 @@ public class HomeActivity extends AppCompatActivity {
                     }
                     if (!contentValues.getAsString("package_name").equals("com.sohu.inputmethod.sogou.xiaomi")) {
                         lastUsed = contentValues.get("package_name").toString();
-                        if (lastUsed.equals("com.facebook.katana")) {
+                        if (lastUsed.equals(FACEBOOK_PACKAGE) || lastUsed.equals(TWITTER_PACKAGE) || lastUsed.equals(WHATSAPP_PACKAGE) || lastUsed.equals(VIBER_PACKAGE) ||
+                                lastUsed.equals(DUO_PACKAGE) || lastUsed.equals(SNAPCHAT_PACKAGE) || lastUsed.equals(INSTAGRAM_PACKAGE) || lastUsed.equals(MESSENGER_PACKAGE)) {
                             IntentFilter keyboardFilter = new IntentFilter(Keyboard.ACTION_AWARE_KEYBOARD);
                             registerReceiver(keyboardListener, keyboardFilter);
                         }
@@ -173,7 +190,7 @@ public class HomeActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Keyboard.ACTION_AWARE_KEYBOARD)) {
                 //using keyboard in facebook
-                Log.d("aware", "using keyboard inside facebook");
+                Log.d("aware", "using keyboard inside social media app");
             }
         }
     }
@@ -228,26 +245,29 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    TO DO
+     */
     public void retrieveKeyboardData() {
-        Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY,0);
-        today.set(Calendar.MINUTE, 0);
-        today.set(Calendar.SECOND, 0);
-
-
-        Cursor cursor = getApplicationContext().getContentResolver().query(
-                Keyboard_Provider.Keyboard_Data.CONTENT_URI, null,
-                Keyboard_Provider.Keyboard_Data.PACKAGE_NAME +"="+"'com.facebook.katana'",null,
-                Keyboard_Provider.Keyboard_Data.TIMESTAMP + " ASC");
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-
-                Long answer = cursor.getLong(cursor.getColumnIndex(Keyboard_Provider.Keyboard_Data.TIMESTAMP));
-                Log.d("mood_keyboard",Long.toString(answer));
-
-            } while (cursor.moveToNext());
-            cursor.close();
-        }
+//        Calendar today = Calendar.getInstance();
+//        today.set(Calendar.HOUR_OF_DAY,0);
+//        today.set(Calendar.MINUTE, 0);
+//        today.set(Calendar.SECOND, 0);
+//
+//
+//        Cursor cursor = getApplicationContext().getContentResolver().query(
+//                Keyboard_Provider.Keyboard_Data.CONTENT_URI, null,
+//                Keyboard_Provider.Keyboard_Data.PACKAGE_NAME +"="+"'com.facebook.katana'",null,
+//                Keyboard_Provider.Keyboard_Data.TIMESTAMP + " ASC");
+//        if (cursor != null && cursor.moveToFirst()) {
+//            do {
+//
+//                Long answer = cursor.getLong(cursor.getColumnIndex(Keyboard_Provider.Keyboard_Data.TIMESTAMP));
+//                Log.d("mood_keyboard",Long.toString(answer));
+//
+//            } while (cursor.moveToNext());
+//            cursor.close();
+//        }
     }
 
 }
