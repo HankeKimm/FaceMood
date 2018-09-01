@@ -1,14 +1,11 @@
 package com.socialtracking.ubiss;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -154,76 +151,4 @@ public class HomeActivityFragment extends Fragment {
             rightYAxis.setTextColor(0x7fffffff);
         }
     }
-
-//    private void createMoodChart(DataManager dataManager, View rootView) {
-//        LineChart moodChart = (LineChart) rootView.findViewById(R.id.moodChart);
-//
-//        ArrayList<String> esmAnswers = dataManager.retrieveESMSData();
-//
-//        /*
-//        Negative and Positive emotions
-//         */
-//        ArrayList<String> positiveEmotions = new ArrayList<String>();
-//        positiveEmotions.add("excited");
-//        positiveEmotions.add("delighted");
-//        positiveEmotions.add("happy");
-//        positiveEmotions.add("glad");
-//        positiveEmotions.add("calm");
-//        positiveEmotions.add("satisfied");
-//        positiveEmotions.add("serene");
-//        positiveEmotions.add("sleepy");
-//
-//        /**
-//         * Create and design the mood entries dataset
-//         */
-//        List<Entry> moodEntries = new ArrayList<>();
-////        moodEntries.add(new Entry(0, 0));
-//
-////        int counter = 0;
-////        for (String s: esmAnswers){
-////            //If emotion in positive emotions set 0
-////            if(positiveEmotions.contains(s))
-////                moodEntries.add(new Entry(counter, 0));
-////            else
-////                moodEntries.add(new Entry(counter, 1));
-////            counter += 1;
-////        }
-//
-//        if(moodEntries.isEmpty()) {
-//            moodChart.setNoDataText("Chart is Empty. Start using Facebook to see some data!");
-//        } else {
-//            LineDataSet moodDataSet = new LineDataSet(moodEntries, "Mood (positive, negative)");
-//            moodDataSet.setDrawCircles(true);
-//            moodDataSet.setDrawFilled(true);
-//            moodDataSet.disableDashedLine();
-//            moodDataSet.setCircleRadius(5);
-//            moodDataSet.setCircleHoleRadius(5);
-//            moodDataSet.setValueTextColor(0x7fffffff);
-//
-//
-//            LineData moodLineData = new LineData(moodDataSet);
-//            moodChart.setData(moodLineData);
-//
-//            Legend legend = moodChart.getLegend();
-//            legend.setTextColor(0x7fffffff);
-//
-//            List<FacebookDataItem> facebookUsageData = dataManager.retrieveFacebookData();
-//            final FacebookDataItem[] items = facebookUsageData.toArray(new FacebookDataItem[facebookUsageData.size()]);
-//
-//            IAxisValueFormatter formatter = createAxisFormatter(items);
-//
-//            XAxis moodChartXAxis = moodChart.getXAxis();
-//            moodChartXAxis.setTextColor(0x7fffffff);
-//
-//            moodChartXAxis.setGranularity(1f); // minimum axis-step (interval) is 1
-//            moodChartXAxis.setAxisMinimum(0f);
-//            moodChartXAxis.setValueFormatter(formatter);
-//
-//            YAxis leftYAxis = moodChart.getAxis(YAxis.AxisDependency.LEFT);
-//            leftYAxis.setTextColor(0x7fffffff);
-//
-//            YAxis rightYAxis = moodChart.getAxis(YAxis.AxisDependency.RIGHT);
-//            rightYAxis.setTextColor(0x7fffffff);
-//        }
-//    }
 }
