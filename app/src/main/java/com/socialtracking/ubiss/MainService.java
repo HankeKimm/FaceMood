@@ -13,6 +13,8 @@ import com.aware.Applications;
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
 import com.aware.Keyboard;
+import com.aware.Locations;
+import com.aware.Screen;
 import com.aware.providers.Applications_Provider;
 
 public class MainService extends Service {
@@ -78,5 +80,40 @@ public class MainService extends Service {
 
             }
         });
+
+
+//        Locations.setSensorObserver(new Locations.AWARESensorObserver() {
+//            @Override
+//            public void onLocationChanged(ContentValues contentValues) {
+//
+//            }
+//        });
+
+        Aware.startScreen(this);
+        Screen.setSensorObserver(new Screen.AWARESensorObserver() {
+            @Override
+            public void onScreenOn() {
+                Log.v("MainService", "Screen ONN");
+            }
+
+            @Override
+            public void onScreenOff() {
+                Log.v("MainService", "Screen OFFFF");
+
+            }
+
+            @Override
+            public void onScreenLocked() {
+
+            }
+
+            @Override
+            public void onScreenUnlocked() {
+
+            }
+        });
         }
+
+
+
 }

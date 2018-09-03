@@ -24,6 +24,7 @@ import com.aware.Aware;
 import com.aware.Aware_Preferences;
 import com.aware.ESM;
 import com.aware.Keyboard;
+import com.aware.Screen;
 import com.aware.providers.Keyboard_Provider;
 import com.aware.ui.PermissionsHandler;
 import com.aware.ui.esms.ESMFactory;
@@ -171,6 +172,30 @@ public class HomeActivity extends AppCompatActivity {
 
                 }
             });
+
+//            Aware.startScreen(this);
+//            Screen.setSensorObserver(new Screen.AWARESensorObserver() {
+//                @Override
+//                public void onScreenOn() {
+//                    Log.v("MainService", "Screen ONN");
+//                }
+//
+//                @Override
+//                public void onScreenOff() {
+//                    Log.v("MainService", "Screen OFFFF");
+//
+//                }
+//
+//                @Override
+//                public void onScreenLocked() {
+//
+//                }
+//
+//                @Override
+//                public void onScreenUnlocked() {
+//
+//                }
+//            });
 
         }
         else {
